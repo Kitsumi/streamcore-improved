@@ -13,9 +13,9 @@ A few key differences between this addon and the original StreamCore are:
 
 ### Installation
 
-1. Download source code `Code > Download Zip`
+1. Download the source code `Code > Download Zip`
 2. Extract the ZIP contents `streamcore-improved-master` to your Garry's Mod addons folder
-3. Enable the extension using the console command `wire_expression2_extension_enable streamcore`, or through the Extensions menu on _Spawnlist > Options > Extensions_ **(Skip if enabled already. On servers this requires admin privileges)**
+3. Enable the extension using the console command `wire_expression2_extension_enable streamcore`, or through the Extensions menu on _Spawnlist > Utilities > Admin > E2 Extensions_. *(Skip if enabled already. On servers this requires admin privileges)*
 
 ### Functions
 
