@@ -1,6 +1,6 @@
 --[[
 	When networking with "streamcore.command", the first value
-	is a number that tells clients what to do. They can be:
+	is a number that tells clients what to do. It can be:
 
 	0 - Stops a existing stream
 	1 - Start a new stream
@@ -20,7 +20,16 @@ StreamCore = {
 	}
 }
 
--- Whitelist code taken from StarfallEx
+--[[
+	Whitelist code partially taken from StarfallEx / Vurv78's WebAudio
+
+	You can make pull requests to add more URLs here, but it must follow some rules:
+
+		- Must be a website capable of streaming audio (obviously)
+		- Sites cannot track users, unless if they are a well-known corporation.
+		- Do not request to add your own website
+]]
+
 local function pattern(str) return { str, true } end
 local function simple(str) return { string.PatternSafe(str), false } end
 

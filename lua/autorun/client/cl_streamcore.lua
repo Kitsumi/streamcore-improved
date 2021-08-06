@@ -1,8 +1,8 @@
 --[[
 	A few notes about the StreamCore.streams table:
 
-	- Stream IDs are a concatenation of the entity index they are playing
-	from, a underscore and a number players passed to entity:streamStart
+	- Stream IDs are a concatenation of the entity index they are playing from,
+	a underscore and any number that players passed to entity:streamStart
 
 	- Every stream is stored as a key-value dictionary, where
 	the key is the stream ID and the value is the stream properties
@@ -120,7 +120,7 @@ function StreamCore:Think()
 		-- The sound channel is not ready yet 
 		if stream[1] == nil then continue end
 
-		-- The entity the stream was attached to got removed
+		-- The entity the stream was attached got removed
 		if not IsValid(stream[5]) then
 			StreamCore:Stop(id)
 
