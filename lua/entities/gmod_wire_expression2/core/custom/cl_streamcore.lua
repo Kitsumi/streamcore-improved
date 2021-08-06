@@ -3,7 +3,6 @@ E2Helper.Descriptions["streamsRemaining()"] = "Returns the remaining number of s
 E2Helper.Descriptions["streamMaxRadius()"] = "Returns the max. allowed distance for streams (in units)."
 E2Helper.Descriptions["streamAdminOnly()"] = "Returns 1 if the StreamCore is admin-only.\nSee the streamc_adminonly server cvar."
 E2Helper.Descriptions["streamCanStart()"] = "Returns 1 if you are allowed to create a new stream. (Only if you haven't reached the max. number of streams and the antispam time has passed)"
-E2Helper.Descriptions["streamCanUpdate()"] = "Returns 1 if you are allowed to update a stream. (Only if the antispam time has passed)"
 E2Helper.Descriptions["streamStop(n)"] = "Stops the Nth stream started earlier with streamStart."
 
 E2Helper.Descriptions["streamStart(e:nns)"] = "Starts a stream with id and volume from an URL."

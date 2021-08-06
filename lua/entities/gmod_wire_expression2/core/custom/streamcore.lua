@@ -24,8 +24,23 @@ local function canStartStream(ply)
 	return true
 end
 
-local function canStreamUpdate(self)
-	return SysTime() > self.data.sc_next_update
+local function canStreamUpdate(self, streamId, property)
+	if not self.data.sc_streams[streamId] then
+		error("Tried to change " .. property .. " on a inexistent stream!")
+		return false
+	end
+
+	return SysTime() > self.data.sc_streams[streamId][property]
+end
+
+local function streamUpdate(self, streamId, property, netCommand, value)
+	self.data.sc_streams[streamId][property] = SysTime() + 0.1
+
+	net.Start("streamcore.command")
+	net.WriteUInt(netCommand, 3)
+	net.WriteString(streamId)
+	net.WriteFloat(value)
+	net.Broadcast()
 end
 
 local function streamStop(self, streamId, dontBroadcast)
@@ -82,8 +97,12 @@ local function streamStart(self, parent, id, volume, url, autoplay)
 	nextCreations[owner] = SysTime() + StreamCore.config.ap_seconds:GetFloat()
 	streamCounter[owner] = count + 1
 
-	self.data.sc_next_update = 0
-	self.data.sc_streams[streamId] = true
+	-- property update timers
+	self.data.sc_streams[streamId] = {
+		["volume"] = 0,
+		["radius"] = 0,
+		["time"] = 0
+	}
 
 	net.Start("streamcore.command")
 		net.WriteUInt(1, 3)
@@ -121,10 +140,6 @@ e2function number streamCanStart()
 	return canStartStream(self.player) and 1 or 0
 end
 
-e2function number streamCanUpdate()
-	return canStreamUpdate(self) and 1 or 0
-end
-
 __e2setcost(10)
 e2function void streamStop(id)
 	streamStop(self, self.entity:EntIndex() .. "-" .. id)
@@ -150,59 +165,31 @@ end
 __e2setcost(15)
 e2function void streamVolume(id, volume)
 	local streamId = self.entity:EntIndex() .. "-" .. id
-	local owner = self.player
 
-	if not self.data.sc_streams[streamId] then
-		error("Tried to use streamVolume on a inexistent stream!")
-		return
-	end
+	if not canStreamUpdate(self, streamId, "volume") then return end
 
-	if not canStreamUpdate(self) then return end
-	self.data.sc_next_update = SysTime() + 0.1
-
-	net.Start("streamcore.command")
-		net.WriteUInt(2, 3)
-		net.WriteString(streamId)
-		net.WriteFloat(math.Clamp(volume, 0.0, 2.0))
-	net.Broadcast()
+	streamUpdate(self, streamId, "volume", 2, math.Clamp(volume, 0.0, 2.0))
 end
 
 e2function void streamRadius(id, radius)
 	local streamId = self.entity:EntIndex() .. "-" .. id
-	local owner = self.player
 
-	if not self.data.sc_streams[streamId] then return end
-	if not canStreamUpdate(self) then return end
+	if not canStreamUpdate(self, streamId, "radius") then return end
 
-	self.data.sc_next_update = SysTime() + 0.1
-
-	net.Start("streamcore.command")
-		net.WriteUInt(3, 3)
-		net.WriteString(streamId)
-		net.WriteFloat(math.Clamp(radius, 10, StreamCore.config.maxradius:GetFloat()))
-	net.Broadcast()
+	streamUpdate(self, streamId, "radius", 3, math.Clamp(radius, 10, StreamCore.config.maxradius:GetFloat()))
 end
 
 e2function void streamTime(id, time)
 	local streamId = self.entity:EntIndex() .. "-" .. id
-	local owner = self.player
 
-	if not self.data.sc_streams[streamId] then return end
-	if not canStreamUpdate(self) then return end
+	if not canStreamUpdate(self, streamId, "time") then return end
 
-	self.data.sc_next_update = SysTime() + 0.1
-
-	net.Start("streamcore.command")
-		net.WriteUInt(4, 3)
-		net.WriteString(streamId)
-		net.WriteFloat(math.max(time, 0))
-	net.Broadcast()
+	streamUpdate(self, streamId, "time", 4, math.max(time, 0))
 end
 
 registerCallback("construct", function(self)
 	self.data = self.data or {}
 	self.data.sc_is3d = true
-	self.data.sc_next_update = 0
 	self.data.sc_streams = {}
 end)
 
