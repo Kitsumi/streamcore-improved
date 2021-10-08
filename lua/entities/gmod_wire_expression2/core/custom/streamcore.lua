@@ -101,7 +101,8 @@ local function streamStart(self, parent, id, volume, url, autoplay)
 	self.data.sc_streams[streamId] = {
 		["volume"] = 0,
 		["radius"] = 0,
-		["time"] = 0
+		["time"] = 0,
+		["rate"] = 0
 	}
 
 	net.Start("streamcore.command")
@@ -185,6 +186,14 @@ e2function void streamTime(id, time)
 	if not canStreamUpdate(self, streamId, "time") then return end
 
 	streamUpdate(self, streamId, "time", 4, math.max(time, 0))
+end
+
+e2function void streamRate(id, rate)
+	local streamId = self.entity:EntIndex() .. "-" .. id
+
+	if not canStreamUpdate(self, streamId, "rate") then return end
+
+	streamUpdate(self, streamId, "rate", 5, math.Clamp(rate, 0.1, 2))
 end
 
 registerCallback("construct", function(self)

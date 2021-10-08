@@ -56,7 +56,9 @@ function StreamCore:Start(id, url, vol, radius, parent, is3d, owner, autoplay)
 	-- Make sure we don't have any other stream playing with this ID
 	self:Stop(id)
 
-	self.streams[id] = { nil, url, vol, radius, parent, is3d }
+	-- Create the stream object, even though we havent loaded the sound yet, so that
+	-- any updates that happen before it loads will get applied once its ready.
+	self.streams[id] = { nil, url, vol, radius, parent, is3d, 1.0 }
 
 	self:PrintConsole("Stream #" .. id .. " by " .. owner:Name() .. ": " .. url)
 
@@ -85,6 +87,7 @@ function StreamCore:Start(id, url, vol, radius, parent, is3d, owner, autoplay)
 		self.streams[id][1] = soundObj
 
 		soundObj:SetVolume(0.0)
+		soundObj:SetPlaybackRate(self.streams[id][7])
 
 		if autoplay then
 			soundObj:Play()
@@ -110,6 +113,16 @@ function StreamCore:SetTime(id, time)
 
 	soundObj:SetTime(time, true)
 	soundObj:Play()
+end
+
+function StreamCore:SetRate(id, rate)
+	if not self.streams[id] then return end
+	self.streams[id][7] = rate
+
+	local soundObj = self.streams[id][1]
+	if not IsValid(soundObj) then return end
+
+	soundObj:SetPlaybackRate(rate)
 end
 
 function StreamCore:Think()
@@ -198,6 +211,10 @@ net.Receive("streamcore.command", function(_)
 	elseif cmd == 4 then
 		local time = net.ReadFloat()
 		StreamCore:SetTime(id, time)
+
+	elseif cmd == 5 then
+		local rate = net.ReadFloat()
+		StreamCore:SetRate(id, rate)
 	end
 end)
 

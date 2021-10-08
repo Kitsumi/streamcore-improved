@@ -39,6 +39,7 @@ Cost | Function										| Description
 15   | streamVolume(number id, number volume)		| Changes the stream volume. This value gets clamped between 0 and 2.
 15   | streamRadius(number id, number radius)		| Changes the stream radius. This value gets clamped between 10 and streamMaxRadius()
 15   | streamTime(number id, number time)			| Sets the time (in seconds) of the stream, and starts playing it from there if it isn't already. *(Does not work on online radio streams)*
+15   | streamRate(number id, number rate)			| Sets the playback rate of the stream. *(between 0.1 and 2)*
 
 ### Console commands/vars
 
