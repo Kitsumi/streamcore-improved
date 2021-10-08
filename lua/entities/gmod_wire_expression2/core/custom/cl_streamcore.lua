@@ -14,3 +14,5 @@ E2Helper.Descriptions["streamVolume(nn)"] = "Changes the Nth stream's volume.\nT
 E2Helper.Descriptions["streamRadius(nn)"] = "Changes the Nth stream's radius.\nThis value gets clamped between 10 and streamMaxRadius()"
 E2Helper.Descriptions["streamTime(nn)"] = "Sets the time (in seconds) of the stream, and starts playing it from there if it isn't already.\n(Does not work on online radio streams)"
 E2Helper.Descriptions["streamRate(nn)"] = "Sets the playback rate of the stream (between 0.1 and 2).\n(Does not work well on online radio streams)"
+
+E2Helper.Descriptions["admStreamRadius(nn)"] = "(SuperAdmin only) Changes the Nth stream's radius.\nUnlike streamRadius, there is no limit."

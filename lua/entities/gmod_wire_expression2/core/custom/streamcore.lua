@@ -196,6 +196,17 @@ e2function void streamRate(id, rate)
 	streamUpdate(self, streamId, "rate", 5, math.Clamp(rate, 0.1, 2))
 end
 
+e2function void admStreamRadius(id, radius)
+	if not self.player:IsSuperAdmin() then
+		error("You cannot use admStreamRadius!")
+		return
+	end
+
+	local streamId = self.entity:EntIndex() .. "-" .. id
+	if not canStreamUpdate(self, streamId, "radius") then return end
+	streamUpdate(self, streamId, "radius", 3, math.max(10, radius))
+end
+
 registerCallback("construct", function(self)
 	self.data = self.data or {}
 	self.data.sc_is3d = true
