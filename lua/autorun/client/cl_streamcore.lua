@@ -176,7 +176,7 @@ concommand.Add("streamc_list", function()
 	StreamCore:PrintConsole("##############################################")
 end)
 
-concommand.Add("streamc_stop_id", function(ply, concmd, args)
+concommand.Add("streamc_stop_id", function(_, _, args)
 	if #args < 1 then return end
 	local id = args[1]
 

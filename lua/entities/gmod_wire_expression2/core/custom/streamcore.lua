@@ -71,8 +71,8 @@ local function streamStart(self, parent, id, volume, url, autoplay)
 	local streamId = self.entity:EntIndex() .. "-" .. id
 
 	-- Note that the last parameter is "true" here. We dont have to
-	-- transmit to clients to stop the stream since streamStart on the client
-	-- will already stop streams that use the same ID
+	-- transmit to clients to stop the stream since streamStart
+	-- will already do that for streams that use the same ID
 	streamStop(self, streamId, true)
 
 	local count = streamCounter[owner] or 0
