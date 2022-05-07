@@ -27,6 +27,10 @@ function StreamCore:PrintConsole(msg)
 	MsgC(Color(255,145,0), "[StreamCore] ", Color(255,255,255), msg, "\n")
 end
 
+function StreamCore:PrintConsoleError(msg)
+	MsgC(Color(255,145,0), "[StreamCore] ", Color(255,0,0), "ERROR: ", Color(255,255,255), msg, "\n")
+end
+
 function StreamCore:IsDisabled()
 	return self.cvarDisabled:GetBool()
 end
@@ -50,6 +54,21 @@ function StreamCore:StopAll()
 	self.streams = {}
 end
 
+-- Safely calls a function from IGModAudioChannel.
+-- This was needed since sometimes sound.PlayURL ignores the
+-- noblock flag, and some functions would throw errors without it
+function StreamCore:CallFunc(id, func, ...)
+	if not self.streams[id] then return end
+
+	local soundObj = self.streams[id][1]
+	if not IsValid(soundObj) then return end
+
+	local suc = pcall(soundObj[func], soundObj, ...)
+	if not suc then
+		self:PrintConsoleError("Stream #" .. id .. " does not support: " .. func)
+	end
+end
+
 function StreamCore:Start(id, url, vol, radius, parent, is3d, owner, autoplay)
 	if self:IsDisabled() then return end
 	if not IsValid(parent) then return end
@@ -68,7 +87,7 @@ function StreamCore:Start(id, url, vol, radius, parent, is3d, owner, autoplay)
 
 	sound.PlayURL(url, flags, function(soundObj, _, errStr)
 		if not IsValid(soundObj) then
-			self:PrintConsole("Stream #" .. id .. " failed to load: " .. errStr)
+			self:PrintConsoleError("Stream #" .. id .. " failed to load: " .. errStr)
 			return
 		end
 
@@ -96,7 +115,8 @@ function StreamCore:Start(id, url, vol, radius, parent, is3d, owner, autoplay)
 
 		soundObj:SetVolume(0.0)
 		soundObj:SetPlaybackRate(self.streams[id][7])
-		soundObj:EnableLooping(self.streams[id][8])
+
+		self:CallFunc(id, "EnableLooping", self.streams[id][8])
 
 		if autoplay then
 			soundObj:Play()
@@ -120,7 +140,8 @@ function StreamCore:SetTime(id, time)
 	local soundObj = self.streams[id][1]
 	if not IsValid(soundObj) then return end
 
-	soundObj:SetTime(time, true)
+	self:CallFunc(id, "SetTime", time, true)
+
 	soundObj:Play()
 end
 
@@ -141,7 +162,7 @@ function StreamCore:SetLoop(id, loop)
 	local soundObj = self.streams[id][1]
 	if not IsValid(soundObj) then return end
 
-	soundObj:EnableLooping(loop)
+	self:CallFunc(id, "EnableLooping", loop)
 end
 
 function StreamCore:Think()
