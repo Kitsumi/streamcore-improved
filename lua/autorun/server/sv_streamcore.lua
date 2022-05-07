@@ -8,6 +8,7 @@
 	3 - Set radius
 	4 - Set time
 	5 - Set playback rate
+	6 - Set looping
 ]]
 
 util.AddNetworkString("streamcore.command")

@@ -102,7 +102,8 @@ local function streamStart(self, parent, id, volume, url, autoplay)
 		["volume"] = 0,
 		["radius"] = 0,
 		["time"] = 0,
-		["rate"] = 0
+		["rate"] = 0,
+		["loop"] = 0
 	}
 
 	net.Start("streamcore.command")
@@ -194,6 +195,14 @@ e2function void streamRate(id, rate)
 	if not canStreamUpdate(self, streamId, "rate") then return end
 
 	streamUpdate(self, streamId, "rate", 5, math.Clamp(rate, 0.1, 2))
+end
+
+e2function void streamLoop(id, loop)
+	local streamId = self.entity:EntIndex() .. "-" .. id
+
+	if not canStreamUpdate(self, streamId, "loop") then return end
+
+	streamUpdate(self, streamId, "loop", 6, (loop > 0) and 1.0 or 0.0)
 end
 
 e2function void admStreamRadius(id, radius)

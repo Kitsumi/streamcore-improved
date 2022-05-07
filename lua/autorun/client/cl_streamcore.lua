@@ -15,6 +15,7 @@
 		[5](entity)				- Parent entity this stream is playing from
 		[6](bool)				- Is this stream a 3D sound
 		[7](number)				- Playback rate
+		[8](bool)				- Enable looping
 ]]
 
 local StreamCore = {
@@ -59,11 +60,13 @@ function StreamCore:Start(id, url, vol, radius, parent, is3d, owner, autoplay)
 
 	-- Create the stream object, even though we havent loaded the sound yet, so that
 	-- any updates that happen before it loads will get applied once its ready.
-	self.streams[id] = { nil, url, vol, radius, parent, is3d, 1.0 }
+	self.streams[id] = { nil, url, vol, radius, parent, is3d, 1.0, false }
 
 	self:PrintConsole("Stream #" .. id .. " by " .. owner:Name() .. ": " .. url)
 
-	sound.PlayURL(url, is3d and "noblock noplay 3d" or "noblock noplay", function(soundObj, _, errStr)
+	local flags = is3d and "noblock noplay 3d" or "noblock noplay"
+
+	sound.PlayURL(url, flags, function(soundObj, _, errStr)
 		if not IsValid(soundObj) then
 			self:PrintConsole("Stream #" .. id .. " failed to load: " .. errStr)
 			return
@@ -93,6 +96,7 @@ function StreamCore:Start(id, url, vol, radius, parent, is3d, owner, autoplay)
 
 		soundObj:SetVolume(0.0)
 		soundObj:SetPlaybackRate(self.streams[id][7])
+		soundObj:EnableLooping(self.streams[id][8])
 
 		if autoplay then
 			soundObj:Play()
@@ -128,6 +132,16 @@ function StreamCore:SetRate(id, rate)
 	if not IsValid(soundObj) then return end
 
 	soundObj:SetPlaybackRate(rate)
+end
+
+function StreamCore:SetLoop(id, loop)
+	if not self.streams[id] then return end
+	self.streams[id][8] = loop
+
+	local soundObj = self.streams[id][1]
+	if not IsValid(soundObj) then return end
+
+	soundObj:EnableLooping(loop)
 end
 
 function StreamCore:Think()
@@ -220,6 +234,10 @@ net.Receive("streamcore.command", function(_)
 	elseif cmd == 5 then
 		local rate = net.ReadFloat()
 		StreamCore:SetRate(id, rate)
+
+	elseif cmd == 6 then
+		local loop = net.ReadFloat()
+		StreamCore:SetLoop(id, loop > 0)
 	end
 end)
 
