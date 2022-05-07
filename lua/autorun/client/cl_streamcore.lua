@@ -14,6 +14,7 @@
 		[4](number)				- Radius
 		[5](entity)				- Parent entity this stream is playing from
 		[6](bool)				- Is this stream a 3D sound
+		[7](number)				- Playback rate
 ]]
 
 local StreamCore = {
