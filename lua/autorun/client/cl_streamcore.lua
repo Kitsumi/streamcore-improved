@@ -63,8 +63,11 @@ function StreamCore:Start(id, url, vol, radius, parent, is3d, owner, autoplay)
 
 	self:PrintConsole("Stream #" .. id .. " by " .. owner:Name() .. ": " .. url)
 
-	sound.PlayURL(url, is3d and "noblock noplay 3d" or "noblock noplay", function(soundObj)
-		if not IsValid(soundObj) then return end
+	sound.PlayURL(url, is3d and "noblock noplay 3d" or "noblock noplay", function(soundObj, _, errStr)
+		if not IsValid(soundObj) then
+			self:PrintConsole("Stream #" .. id .. " failed to load: " .. errStr)
+			return
+		end
 
 		-- Dont play if our parent is invalid, or soundObj loaded after the stream was previously stopped,
 		-- or a new one started with the same id (Can happen if the HTTP request takes a while to respond)
@@ -80,7 +83,8 @@ function StreamCore:Start(id, url, vol, radius, parent, is3d, owner, autoplay)
 		end
 
 		if is3d then
-			-- we're going to calculate the fade distance ourselfes, so set this one very high
+			-- we're going to calculate the fade distance ourselves,
+			-- so set the 3d fade distance very high
 			soundObj:Set3DFadeDistance(9999, 99999)
 			soundObj:SetPos(parent:GetPos())
 		end
