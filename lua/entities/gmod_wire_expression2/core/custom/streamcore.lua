@@ -168,41 +168,41 @@ __e2setcost(15)
 e2function void streamVolume(id, volume)
 	local streamId = self.entity:EntIndex() .. "-" .. id
 
-	if not canStreamUpdate(self, streamId, "volume") then return end
-
-	streamUpdate(self, streamId, "volume", 2, math.Clamp(volume, 0.0, 2.0))
+	if canStreamUpdate(self, streamId, "volume") then
+		streamUpdate(self, streamId, "volume", 2, math.Clamp(volume, 0.0, 2.0))
+	end
 end
 
 e2function void streamRadius(id, radius)
 	local streamId = self.entity:EntIndex() .. "-" .. id
 
-	if not canStreamUpdate(self, streamId, "radius") then return end
-
-	streamUpdate(self, streamId, "radius", 3, math.Clamp(radius, 10, StreamCore.config.maxradius:GetFloat()))
+	if canStreamUpdate(self, streamId, "radius") then
+		streamUpdate(self, streamId, "radius", 3, math.Clamp(radius, 10, StreamCore.config.maxradius:GetFloat()))
+	end
 end
 
 e2function void streamTime(id, time)
 	local streamId = self.entity:EntIndex() .. "-" .. id
 
-	if not canStreamUpdate(self, streamId, "time") then return end
-
-	streamUpdate(self, streamId, "time", 4, math.max(time, 0))
+	if canStreamUpdate(self, streamId, "time") then
+		streamUpdate(self, streamId, "time", 4, math.max(time, 0))
+	end
 end
 
 e2function void streamRate(id, rate)
 	local streamId = self.entity:EntIndex() .. "-" .. id
 
-	if not canStreamUpdate(self, streamId, "rate") then return end
-
-	streamUpdate(self, streamId, "rate", 5, math.Clamp(rate, 0.1, 2))
+	if canStreamUpdate(self, streamId, "rate") then
+		streamUpdate(self, streamId, "rate", 5, math.Clamp(rate, 0.1, 2))
+	end
 end
 
 e2function void streamLoop(id, loop)
 	local streamId = self.entity:EntIndex() .. "-" .. id
 
-	if not canStreamUpdate(self, streamId, "loop") then return end
-
-	streamUpdate(self, streamId, "loop", 6, (loop > 0) and 1.0 or 0.0)
+	if canStreamUpdate(self, streamId, "loop") then
+		streamUpdate(self, streamId, "loop", 6, (loop > 0) and 1.0 or 0.0)
+	end
 end
 
 e2function void admStreamRadius(id, radius)
@@ -212,8 +212,10 @@ e2function void admStreamRadius(id, radius)
 	end
 
 	local streamId = self.entity:EntIndex() .. "-" .. id
-	if not canStreamUpdate(self, streamId, "radius") then return end
-	streamUpdate(self, streamId, "radius", 3, math.max(10, radius))
+
+	if canStreamUpdate(self, streamId, "radius") then
+		streamUpdate(self, streamId, "radius", 3, math.max(10, radius))
+	end
 end
 
 registerCallback("construct", function(self)
