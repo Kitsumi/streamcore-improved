@@ -60,6 +60,7 @@ local Whitelist = {
 	simple [[raw.githubusercontent.com]],
 	simple [[gist.githubusercontent.com]],
 	simple [[raw.github.com]],
+	simple [[api.github.com]],
 	simple [[cloud.githubusercontent.com]],
 	simple [[user-images.githubusercontent.com]],
 	pattern [[avatars(%d*)%.githubusercontent%.com/(.+)]],
@@ -72,14 +73,37 @@ local Whitelist = {
 	-- Gitlab
 	simple [[gitlab.com]],
 
+	-- Bitbucket
+	simple [[bitbucket.org]],
+
 	-- Onedrive
 	simple [[onedrive.live.com/redir]],
+	simple [[onedrive.live.com]],
+	simple [[api.onedrive.com]],
+
+	-- Google Search
+	simple [[google.com"]],
+	simple [[www.google.com"]],
+
+	-- Google Drive
+	simple [[docs.google.com]],
+	simple [[drive.google.com]],
 
 	-- Google Translate Api
 	simple [[translate.google.com]],
 
 	-- calzoneman's aeiou
-	simple [[tts.cyzon.us]]
+	simple [[tts.cyzon.us]],
+
+	-- Steam
+	simple [[steamcommunity.com]],
+	simple [[steamcdn-a.akamaihd.net]],
+
+	-- Puu.sh
+	simple [[puu.sh]],
+
+	-- Facepunch
+	simple [[facepunch.com]]
 }
 
 function StreamCore:IsURLWhitelisted(url)
@@ -89,7 +113,7 @@ function StreamCore:IsURLWhitelisted(url)
 	local relative = url:match("^https?://(.*)")
 	if not relative then return false end
 
-	for k, data in ipairs(Whitelist) do
+	for _, data in ipairs(Whitelist) do
 		local match, is_pattern = data[1], data[2]
 		local haystack = is_pattern and relative or (relative:match("(.-)/.*") or relative)
 
