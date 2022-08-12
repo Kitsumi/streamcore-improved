@@ -57,7 +57,7 @@ local function streamStop(self, streamId, dontBroadcast)
 	net.Broadcast()
 end
 
-local function streamStart(self, parent, id, volume, url, autoplay)
+local function streamStart(self, parent, id, volume, url, isPaused)
 	local owner = self.player
 
 	if not IsValid(owner) then return end
@@ -103,7 +103,8 @@ local function streamStart(self, parent, id, volume, url, autoplay)
 		["radius"] = 0,
 		["time"] = 0,
 		["rate"] = 0,
-		["loop"] = 0
+		["loop"] = 0,
+		["paused"] = 0
 	}
 
 	net.Start("streamcore.command")
@@ -116,7 +117,7 @@ local function streamStart(self, parent, id, volume, url, autoplay)
 		net.WriteEntity(parent)
 		net.WriteBool(self.data.sc_is3d)
 		net.WriteEntity(owner)
-		net.WriteBool(autoplay)
+		net.WriteBool(isPaused)
 	net.Broadcast()
 end
 
@@ -149,19 +150,19 @@ end
 
 __e2setcost(50)
 e2function void entity:streamStart(id, volume, string url)
-	streamStart(self, this, id, volume, url, true)
+	streamStart(self, this, id, volume, url, false)
 end
 
 e2function void entity:streamStart(id, string url, volume)
-	streamStart(self, this, id, volume, url, true)
+	streamStart(self, this, id, volume, url, false)
 end
 
 e2function void entity:streamStart(id, string url)
-	streamStart(self, this, id, 1.0, url, true)
+	streamStart(self, this, id, 1.0, url, false)
 end
 
 e2function void entity:streamCreate(id, string url, volume)
-	streamStart(self, this, id, volume, url, false)
+	streamStart(self, this, id, volume, url, true)
 end
 
 __e2setcost(15)
@@ -202,6 +203,14 @@ e2function void streamLoop(id, loop)
 
 	if canStreamUpdate(self, streamId, "loop") then
 		streamUpdate(self, streamId, "loop", 6, (loop > 0) and 1.0 or 0.0)
+	end
+end
+
+e2function void streamPause(id, pause)
+	local streamId = self.entity:EntIndex() .. "-" .. id
+
+	if canStreamUpdate(self, streamId, "paused") then
+		streamUpdate(self, streamId, "paused", 7, (pause > 0) and 1.0 or 0.0)
 	end
 end
 

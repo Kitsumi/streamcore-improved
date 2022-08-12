@@ -9,6 +9,7 @@
 	4 - Set time
 	5 - Set playback rate
 	6 - Set looping
+	7 - Set paused
 ]]
 
 util.AddNetworkString("streamcore.command")
