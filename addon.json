@@ -1,7 +1,13 @@
 {
-	"title": "StreamCore Improved",
-	"type": "ServerContent",
-	"tags": [
-		"fun"
-	]
+    "title": "StreamCore Improved",
+    "type": "ServerContent",
+    "tags": ["fun"],
+    "ignore": [
+        ".git*",
+        "*.txt",
+        "*.md",
+        "*.yml",
+        "glualint.json",
+        "LICENSE"
+    ]
 }
