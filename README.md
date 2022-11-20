@@ -7,14 +7,16 @@ The goal of this "improved" version is to add useful features while still keepin
 A few key differences between this addon and the original are:
 
 * Only URLs on the whitelist can be used
-* Audible radius is consistent with Source units
+* New functions: `streamCreate`, `streamTime`, `streamRate`, and `streamLoop`
 * Prints to console the URL and owner name of anybody who starts a stream
+* Audible radius is consistent with Source units
 * Limits how quickly streams can be created/updated
-* Streams can have the their playback time changed with streamTime _(see **Functions**)_
 * Configurable limits on how many streams each player can have and max. radius
 * Auto-apply corrections for Dropbox links
 
 ### Installation
+
+**ATTENTION: this REPLACES the original stream core, keeping it installed while also using the improved version will cause issues!**
 
 1. Download the source code `Code > Download Zip`
 2. Extract the ZIP contents `streamcore-improved-master` to your Garry's Mod addons folder
