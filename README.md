@@ -9,20 +9,20 @@ A few key differences between this addon and the original are:
 * Only URLs on the whitelist can be used
 * New functions: `streamCreate`, `streamTime`, `streamRate`, and `streamLoop`
 * Prints to console the URL and owner name of anybody who starts a stream
-* Audible radius is consistent with Source units
+* `streamRadius` is consistent, no matter if you used `streamDisable3D` or not
 * Limits how quickly streams can be created/updated
 * Configurable limits on how many streams each player can have and max. radius
 * Auto-apply corrections for Dropbox links
 
 ### Installation
 
-**ATTENTION: this REPLACES the original stream core, keeping it installed while also using the improved version will cause issues!**
+**ATTENTION: this REPLACES the original stream core, keeping the original installed while also using the improved version will cause issues!**
 
 1. Download the source code `Code > Download Zip`
 2. Extract the ZIP contents `streamcore-improved-master` to your Garry's Mod addons folder
 3. Enable the extension *(Skip if enabled already, requires admin privileges)*
-	* Using the console command `wire_expression2_extension_enable streamcore`
-	* Through the Extensions menu on **Spawnlist > Utilities > Admin > E2 Extensions**
+	* Using the console command `wire_expression2_extension_enable streamcore`, or
+	* Using the Extensions menu on **Spawnlist > Utilities > Admin > E2 Extensions**
 
 ### Functions
 
