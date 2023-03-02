@@ -24,19 +24,19 @@ local StreamCore = {
     printTagColor = Color( 255, 145, 0 ),
 
     cvarDisabled = CreateClientConVar(
-        'streamc_disabled',
-        '0', true, false,
-        'Disable all StreamCore features (for yourself).',
+        "streamc_disabled",
+        "0", true, false,
+        "Disable all StreamCore features (for yourself).",
         0, 1
     )
 }
 
 function StreamCore:PrintConsole( msg )
-    MsgC( self.printTagColor, '[StreamCore] ', color_white, msg, '\n' )
+    MsgC( self.printTagColor, "[StreamCore] ", color_white, msg, "\n" )
 end
 
 function StreamCore:PrintConsoleError( msg )
-    MsgC( self.printTagColor, '[StreamCore] ', Color( 255, 0, 0 ), 'ERROR: ', color_white, msg, '\n' )
+    MsgC( self.printTagColor, "[StreamCore] ", Color( 255, 0, 0 ), "ERROR: ", color_white, msg, "\n" )
 end
 
 function StreamCore:IsDisabled()
@@ -51,7 +51,7 @@ function StreamCore:Stop( id )
     end
 
     self.streams[id] = nil
-    self:PrintConsole( 'Stream #' .. id .. ' successfully stopped!' )
+    self:PrintConsole( "Stream #" .. id .. " successfully stopped!" )
 end
 
 function StreamCore:StopAll()
@@ -73,7 +73,7 @@ function StreamCore:CallFunc( id, func, ... )
 
     local suc = pcall( soundObj[func], soundObj, ... )
     if not suc then
-        self:PrintConsoleError( 'Stream #' .. id .. ' does not support: ' .. func )
+        self:PrintConsoleError( "Stream #" .. id .. " does not support: " .. func )
     end
 end
 
@@ -82,20 +82,20 @@ function StreamCore:Start( id, url, vol, radius, parent, is3d, owner, isPaused )
     if not IsValid( parent ) then return end
     if not IsValid( owner ) then return end
 
-    -- Make sure we don't have any other stream playing with this ID
+    -- Make sure we don"t have any other stream playing with this ID
     self:Stop( id )
 
     -- Create the stream object, even though we havent loaded the sound yet, so that
     -- any updates that happen before it loads will get applied once it does.
     self.streams[id] = { nil, url, vol, radius, parent, is3d, 1.0, false, isPaused }
 
-    self:PrintConsole( 'Stream #' .. id .. ' by ' .. owner:Name() .. ': ' .. url )
+    self:PrintConsole( "Stream #" .. id .. " by " .. owner:Name() .. ": " .. url )
 
-    local flags = is3d and 'noblock noplay 3d' or 'noblock noplay'
+    local flags = is3d and "noblock noplay 3d" or "noblock noplay"
 
     sound.PlayURL( url, flags, function( soundObj, _, errStr )
         if not IsValid( soundObj ) then
-            self:PrintConsoleError( 'Stream #' .. id .. ' failed to load: ' .. errStr )
+            self:PrintConsoleError( "Stream #" .. id .. " failed to load: " .. errStr )
             return
         end
 
@@ -113,7 +113,7 @@ function StreamCore:Start( id, url, vol, radius, parent, is3d, owner, isPaused )
         end
 
         if is3d then
-            -- we're going to calculate the fade distance ourselves,
+            -- we"re going to calculate the fade distance ourselves,
             -- so set the 3d fade distance very high
             soundObj:Set3DFadeDistance( 9999, 99999 )
             soundObj:SetPos( parent:GetPos() )
@@ -124,7 +124,7 @@ function StreamCore:Start( id, url, vol, radius, parent, is3d, owner, isPaused )
         soundObj:SetVolume( 0.0 )
         soundObj:SetPlaybackRate( self.streams[id][7] )
 
-        self:CallFunc( id, 'EnableLooping', self.streams[id][8] )
+        self:CallFunc( id, "EnableLooping", self.streams[id][8] )
 
         if not self.streams[id][9] then
             soundObj:Play()
@@ -145,21 +145,21 @@ function StreamCore:SetRadius( id, radius )
 end
 
 function StreamCore:SetTime( id, time )
-    self:CallFunc( id, 'SetTime', time, true )
+    self:CallFunc( id, "SetTime", time, true )
 end
 
 function StreamCore:SetRate( id, rate )
     if not self.streams[id] then return end
 
     self.streams[id][7] = rate
-    self:CallFunc( id, 'SetPlaybackRate', rate )
+    self:CallFunc( id, "SetPlaybackRate", rate )
 end
 
 function StreamCore:SetLoop( id, loop )
     if not self.streams[id] then return end
 
     self.streams[id][8] = loop
-    self:CallFunc( id, 'EnableLooping', loop )
+    self:CallFunc( id, "EnableLooping", loop )
 end
 
 function StreamCore:SetPaused( id, paused )
@@ -168,9 +168,9 @@ function StreamCore:SetPaused( id, paused )
     self.streams[id][9] = paused
 
     if paused then
-        self:CallFunc( id, 'Pause' )
+        self:CallFunc( id, "Pause" )
     else
-        self:CallFunc( id, 'Play' )
+        self:CallFunc( id, "Play" )
     end
 end
 
@@ -210,29 +210,29 @@ function StreamCore:Think()
     end
 end
 
-concommand.Add( 'streamc_list', function()
-    StreamCore:PrintConsole( '############### Active streams ###############' )
+concommand.Add( "streamc_list", function()
+    StreamCore:PrintConsole( "############### Active streams ###############" )
 
     for id, stream in pairs( StreamCore.streams ) do
-        print( '#' .. id .. '\t' .. stream[2] )
+        print( "#" .. id .. "\t" .. stream[2] )
     end
 
-    StreamCore:PrintConsole( '##############################################' )
+    StreamCore:PrintConsole( "##############################################" )
 end )
 
-concommand.Add( 'streamc_stop_id', function( _, _, args )
+concommand.Add( "streamc_stop_id", function( _, _, args )
     if #args < 1 then return end
     local id = args[1]
 
     StreamCore:Stop( id )
 end )
 
-concommand.Add( 'streamc_stop_all', function()
+concommand.Add( "streamc_stop_all", function()
     StreamCore:StopAll()
-    StreamCore:PrintConsole( 'Purge done.' )
+    StreamCore:PrintConsole( "Purge done." )
 end )
 
-net.Receive( 'streamcore.command', function()
+net.Receive( "streamcore.command", function()
     local cmd = net.ReadUInt( 3 )
     local id = net.ReadString()
 
@@ -275,24 +275,24 @@ net.Receive( 'streamcore.command', function()
     end
 end )
 
-local function updateThinkHook()
-    hook.Remove( 'Think', 'StreamCoreImp_ProcessStreams' )
+local function UpdateThinkHook()
+    hook.Remove( "Think", "StreamCoreImp_ProcessStreams" )
 
     if StreamCore:IsDisabled() then
         StreamCore:StopAll()
-        StreamCore:PrintConsole( 'StreamCore disabled!' )
+        StreamCore:PrintConsole( "StreamCore disabled!" )
 
     else
-        StreamCore:PrintConsole( 'StreamCore enabled!' )
+        StreamCore:PrintConsole( "StreamCore enabled!" )
 
-        hook.Add( 'Think', 'StreamCoreImp_ProcessStreams', function()
+        hook.Add( "Think", "StreamCoreImp_ProcessStreams", function()
             StreamCore:Think()
         end )
     end
 end
 
-cvars.AddChangeCallback( 'streamc_disabled', function()
-    updateThinkHook()
-end, 'streamc_disabled_changed' )
+cvars.AddChangeCallback( "streamc_disabled", function()
+    UpdateThinkHook()
+end, "streamc_disabled_changed" )
 
-updateThinkHook()
+UpdateThinkHook()

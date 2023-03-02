@@ -12,19 +12,19 @@
     7 - Set paused
 ]]
 
-util.AddNetworkString( 'streamcore.command' )
+util.AddNetworkString( "streamcore.command" )
 
 StreamCore = {
     config = {
-        adminonly = CreateConVar( 'streamc_adminonly', 0, FCVAR_SERVER_CAN_EXECUTE, '', 0, 1 ),
-        maxradius = CreateConVar( 'streamc_maxradius', 1500, FCVAR_SERVER_CAN_EXECUTE, '', 200, 4000 ),
-        maxstreams = CreateConVar( 'streamc_maxstreams', 6, FCVAR_SERVER_CAN_EXECUTE, '', 1, 10 ),
-        ap_seconds = CreateConVar( 'streamc_antispam_seconds', 1.0, FCVAR_SERVER_CAN_EXECUTE, '', 0.5, 5.0 )
+        adminonly = CreateConVar( "streamc_adminonly", 0, FCVAR_SERVER_CAN_EXECUTE, "", 0, 1 ),
+        maxradius = CreateConVar( "streamc_maxradius", 1500, FCVAR_SERVER_CAN_EXECUTE, "", 200, 4000 ),
+        maxstreams = CreateConVar( "streamc_maxstreams", 6, FCVAR_SERVER_CAN_EXECUTE, "", 1, 10 ),
+        ap_seconds = CreateConVar( "streamc_antispam_seconds", 1.0, FCVAR_SERVER_CAN_EXECUTE, "", 0.5, 5.0 )
     }
 }
 
 --[[
-    Whitelist code partially taken from StarfallEx / Vurv78's WebAudio
+    Whitelist code partially taken from StarfallEx / Vurv78"s WebAudio
 
     You can make pull requests to add more URLs here, but it must follow some rules:
 
@@ -93,7 +93,7 @@ local whitelist = {
     -- Google Translate Api
     simple [[translate.google.com]],
 
-    -- calzoneman's aeiou
+    -- calzoneman"s aeiou
     simple [[tts.cyzon.us]],
 
     -- Steam
@@ -111,14 +111,14 @@ function StreamCore:IsURLWhitelisted( url )
     if not isstring( url ) then return false end
     url = string.Trim( url )
 
-    local relative = url:match( '^https?://(.*)' )
+    local relative = url:match( "^https?://(.*)" )
     if not relative then return false end
 
     for _, data in ipairs( whitelist ) do
         local match, is_pattern = data[1], data[2]
-        local haystack = is_pattern and relative or ( relative:match( '(.-)/.*' ) or relative )
+        local haystack = is_pattern and relative or ( relative:match( "(.-)/.*" ) or relative )
 
-        if haystack:find( string.format( '^%s%s', match, is_pattern and '' or '$' ), 1 ) then
+        if haystack:find( string.format( "^%s%s", match, is_pattern and "" or "$" ), 1 ) then
             return true
         end
     end
