@@ -25,8 +25,7 @@
     "lint_spaceBetweenBrackets":        true,
     "lint_spaceBetweenBraces":          true,
     "lint_ignoreFiles": [
-        "lua/entities/gmod_wire_expression2/core/custom/*.lua",
-        "lua/autorun/netstream.lua"
+        "lua/entities/gmod_wire_expression2/core/custom/*.lua"
     ],
 
     "prettyprint_spaceBetweenParens":   true,

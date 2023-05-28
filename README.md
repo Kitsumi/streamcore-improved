@@ -57,3 +57,7 @@ Server        | streamc_adminonly &lt;number&gt;  | If set to 1, only admins can
 Server        | streamc_maxradius &lt;number&gt;  | Max. radius players can use on streamRadius
 Server        | streamc_maxstreams &lt;number&gt; | Max. number of streams each player can have at once
 Server        | streamc_antispam_seconds &lt;number&gt; | How long (in seconds) players must wait between each time they create a stream
+
+## Contributing
+
+Please follow the [CFC style guidelines](https://github.com/CFC-Servers/cfc_glua_style_guidelines) before opening pull requests.
