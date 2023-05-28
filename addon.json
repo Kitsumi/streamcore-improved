@@ -6,8 +6,8 @@
         ".git*",
         "*.txt",
         "*.md",
-        "*.yml",
         "glualint.json",
-        "LICENSE"
+        "LICENSE",
+        ".editorconfig"
     ]
 }

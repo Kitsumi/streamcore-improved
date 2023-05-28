@@ -1,5 +1,8 @@
 ## StreamCore - Improved
 
+[![GLuaLint](https://github.com/StyledStrike/streamcore-improved/actions/workflows/glualint.yml/badge.svg)](https://github.com/FPtje/GLuaFixer)
+[![Workshop Page](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-steam-workshop.jross.me%2F2981797599%2Fsubscriptions-text)](https://steamcommunity.com/sharedfiles/filedetails/?id=2981797599)
+
 A Expression 2 extension that allows you to play audio streams from the web.
 
 The goal of this "improved" version is to add useful features while still keeping compatibility with [the original StreamCore](https://steamcommunity.com/sharedfiles/filedetails/?id=442653157), therefore, existing E2s should still work with this one.
@@ -43,15 +46,15 @@ Cost | Function										| Description
 15   | streamTime(number id, number time)			| Sets the time (in seconds) of the stream, and starts playing it from there if it isn't already. *(Does not work on online radio streams)*
 15   | streamRate(number id, number rate)			| Sets the playback rate of the stream. *(between 0.1 and 2)*
 15   | streamLoop(number id, number loop)			| If set to 1, the stream will loop.
-15   | admStreamRadius(number id, number radius)	| **(SuperAdmin only)** Changes the Nth stream's radius. Unlike `streamRadius`, there is no limit.
+15   | admStreamRadius(number id, number radius)	| **(Admin only)** Changes the Nth stream's radius. Unlike `streamRadius`, there is no limit.
 
-### Console commands/vars
+### Console commands/variables
 
 Available on  | Command 						  | Action
 ------------- | --------------------------------- | ------
 Client        | streamc_disabled &lt;number&gt;   | Use `streamc_disabled 1` to disable StreamCore for yourself
-Client        | streamc_list					  | Prints a list of all streams currently playing to console
-Client        | streamc_stop_id					  | Stop a stream using its ID
+Client        | streamc_list					  | Prints a list of all streams and their authors to console
+Client        | streamc_stop_id &lt;string&gt;	  | Stop a stream using its ID
 Client        | streamc_stop_all				  | Stops all streams
 Server        | streamc_adminonly &lt;number&gt;  | If set to 1, only admins can use StreamCore
 Server        | streamc_maxradius &lt;number&gt;  | Max. radius players can use on streamRadius
