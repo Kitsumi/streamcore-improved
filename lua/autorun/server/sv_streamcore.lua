@@ -42,6 +42,7 @@ local whitelist = {
 
     -- Discord
     pattern [[cdn[%w-_]*%.discordapp%.com/.+]],
+    pattern [[media%.discordapp%.net/attachments/(.+)]],
 
     -- Reddit
     simple [[i.redditmedia.com]],
