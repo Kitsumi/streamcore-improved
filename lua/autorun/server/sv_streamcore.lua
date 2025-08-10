@@ -19,7 +19,8 @@ StreamCore = {
         adminonly = CreateConVar( "streamc_adminonly", 0, FCVAR_SERVER_CAN_EXECUTE, "", 0, 1 ),
         maxradius = CreateConVar( "streamc_maxradius", 1500, FCVAR_SERVER_CAN_EXECUTE, "", 200, 4000 ),
         maxstreams = CreateConVar( "streamc_maxstreams", 6, FCVAR_SERVER_CAN_EXECUTE, "", 1, 10 ),
-        ap_seconds = CreateConVar( "streamc_antispam_seconds", 1.0, FCVAR_SERVER_CAN_EXECUTE, "", 0.5, 5.0 )
+        ap_seconds = CreateConVar( "streamc_antispam_seconds", 1.0, FCVAR_SERVER_CAN_EXECUTE, "", 0.5, 5.0 ),
+        whitelist_enabled = CreateConVar( "streamc_whitelist_enabled", 1, FCVAR_SERVER_CAN_EXECUTE, "", 0, 1 )
     }
 }
 
@@ -110,6 +111,7 @@ local whitelist = {
 
 function StreamCore:IsURLWhitelisted( url )
     if not isstring( url ) then return false end
+    if StreamCore.config.whitelist_enabled:GetInt() == 0 then return true end
     url = string.Trim( url )
 
     local relative = url:match( "^https?://(.*)" )
