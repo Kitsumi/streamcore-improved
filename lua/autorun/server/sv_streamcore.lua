@@ -107,6 +107,9 @@ local whitelist = {
 
     -- Facepunch
     simple [[facepunch.com]]
+
+    -- internet-radio.com
+    simple [[www.internet-radio.com]]
 }
 
 function StreamCore:IsURLWhitelisted( url )
